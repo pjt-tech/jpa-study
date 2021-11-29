@@ -15,9 +15,9 @@ public class JpaMain {
 
         try {
             Member member = new Member(200L, "member200");
-            em.persist(member);
+            member.setName("ZZZZZZ");
 
-            em.flush();
+            em.detach(member);
 
             System.out.println("====================");
             tx.commit();
