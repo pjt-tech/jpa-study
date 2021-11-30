@@ -24,8 +24,8 @@ public class JpaMain {
             member.changeTeam(team);
             em.persist(member);
 
-            em.flush(); //sql 버퍼 비우기
-            em.clear(); //영속성 컨텍스트 1차 캐시 초기화
+            /*em.flush(); //sql 버퍼 비우기
+            em.clear(); //영속성 컨텍스트 1차 캐시 초기화 */
 
             Member findMember = em.find(Member.class, member.getId());
 
