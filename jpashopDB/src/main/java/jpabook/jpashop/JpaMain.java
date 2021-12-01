@@ -18,12 +18,7 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Member member = new Member();
-            member.setName("ZZZZZZ");
 
-            em.detach(member);
-
-            System.out.println("====================");
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
