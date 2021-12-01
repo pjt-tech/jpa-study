@@ -1,6 +1,7 @@
 package hellojpa;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class JpaMain {
@@ -15,27 +16,16 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Team team = new Team();
-            team.setName("TeamA");
-            em.persist(team);
-
-            Member member = new Member();
-            member.setUsername("member1");
-            member.changeTeam(team);
-            em.persist(member);
-
             /*em.flush(); //sql 버퍼 비우기
             em.clear(); //영속성 컨텍스트 1차 캐시 초기화 */
 
-            Member findMember = em.find(Member.class, member.getId());
+            Member member = new Member();
+            member.setUsername("kim");
+            member.setCreatedBy("aa");
+            member.setCreatedDate(LocalDateTime.now());
 
-            Team findTeam = findMember.getTeam();
-
-            List<Member> members = findTeam.getMembers();
-
-            for (Member member1 : members) {
-                System.out.println("member1 = " + member1.getUsername());
-            }
+            em.flush();
+            em.clear();
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
