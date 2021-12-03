@@ -16,21 +16,8 @@ public class Item {
     private int price;
     private int stockQuantity;
 
-    @OneToMany(mappedBy = "item")
-    private List<OrderItem> orderItems = new ArrayList<>();
-
-    public void addOrderItem(OrderItem orderItem) {
-        this.orderItems.add(orderItem);
-        orderItem.setItem(this);
-    }
-
-    public List<OrderItem> getOrderItems() {
-        return orderItems;
-    }
-
-    public void setOrderItems(List<OrderItem> orderItems) {
-        this.orderItems = orderItems;
-    }
+    @ManyToMany(mappedBy = "items")
+    private List<Category> categories = new ArrayList<>();
 
     public Item() {
     }
