@@ -16,22 +16,23 @@ public class JpaMain {
         try {
             /*em.flush(); //sql 버퍼 비우기
             em.clear(); //영속성 컨텍스트 1차 캐시 초기화 */
-            Child child1 = new Child();
-            Child child2 = new Child();
+            Member member = new Member();
+            member.setUsername("member1");
+            member.setHomeAddress(new Address("homeCity", "street", "1000000"));
+            member.getFavoriteFoods().add("치킨");
+            member.getFavoriteFoods().add("족발");
+            member.getFavoriteFoods().add("피자");
 
-            Parent parent = new Parent();
-            parent.addChild(child1);
-            parent.addChild(child2);
+            member.getAddressHistory().add(new Address("old1", "street2", "20000"));
+            member.getAddressHistory().add(new Address("old2", "street3", "30000"));
 
-            em.persist(parent);
+            em.persist(member);
 
             em.flush();
             em.clear();
 
-            Parent findParent = em.find(Parent.class, parent.getId());
-            //findParent.getChildList().remove(0);
-
-            em.remove(findParent);
+            Member findMember = em.find(Member.class, member.getId());
+            
 
             tx.commit();
         } catch (Exception e) {
@@ -40,12 +41,5 @@ public class JpaMain {
             em.close();
         }
         emf.close();
-    }
-
-    private static void printMemberAndTeam(Member member) {
-        String username = member.getUsername();
-        System.out.println("username = " + username);
-        Team team = member.getTeam();
-        System.out.println("team = " + team.getName());
     }
 }

@@ -14,7 +14,7 @@ public class Parent {
     @Column(name = "USERNAME")
     private String username;
 
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
     private List<Child> childList = new ArrayList<>();
 
     public List<Child> getChildList() {
