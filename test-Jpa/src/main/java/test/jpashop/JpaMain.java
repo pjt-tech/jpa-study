@@ -1,14 +1,12 @@
 package test.jpashop;
 
-import test.jpashop.domain.Member;
-import test.jpashop.domain.Order;
-import test.jpashop.domain.OrderStatus;
+import test.jpashop.domain.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import java.util.List;
+import java.time.LocalDateTime;
 
 public class JpaMain {
 
@@ -20,22 +18,15 @@ public class JpaMain {
         tx.begin();
 
         try {
+            Album album = new Album();
+            album.setCreatedBy("Park");
+            album.setCreatedDate(LocalDateTime.now());
+            album.setArtist("park");
+            em.persist(album);
+
             Member member = new Member();
-            member.setName("A");
+            member.setAddress(new Address("city", "street", "20000"));
             em.persist(member);
-
-            Order order = new Order();
-            order.setStatus(OrderStatus.ORDER);
-            order.setMember(member);
-            em.persist(order);
-
-            member.addOrder(order);
-
-            Member findMember = em.find(Member.class, member.getId());
-            List<Order> orders = findMember.getOrders();
-            for (Order order1 : orders) {
-                System.out.println(order1.getStatus());
-            }
 
             tx.commit();
         } catch (Exception e) {

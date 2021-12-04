@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Member {
+public class Member extends BaseEntity {
 
     @Id @GeneratedValue // primary key, auto_increment
     @Column(name = "MEMBER_ID")
@@ -13,9 +13,9 @@ public class Member {
     //컬럼의 이름을 변경하거나 길이설정, 널 허용 등의 옵션설정을 하지않을경우
     //@Column 어노테이션을 붙이지 않아도 JPA가 필드를 컬럼으로 생성해준다.
     private String name;
-    private String city;
-    private String street;
-    private String zipcode;
+
+    @Embedded
+    private Address address;
 
     @OneToMany(mappedBy = "member")
     private List<Order> orders = new ArrayList<>();
@@ -23,6 +23,14 @@ public class Member {
     public void addOrder(Order order) {
         this.orders.add(order);
         order.setMember(this);
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public List<Order> getOrders() {
@@ -53,27 +61,4 @@ public class Member {
         this.name = name;
     }
 
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public String getZipcode() {
-        return zipcode;
-    }
-
-    public void setZipcode(String zipcode) {
-        this.zipcode = zipcode;
-    }
 }

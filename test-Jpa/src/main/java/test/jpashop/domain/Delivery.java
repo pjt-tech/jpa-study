@@ -1,9 +1,6 @@
 package test.jpashop.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 @Entity
 public class Delivery {
@@ -11,13 +8,21 @@ public class Delivery {
     @Id @GeneratedValue
     private Long id;
 
-    private String city;
-    private String street;
-    private String zipcode;
     private DelivertStatus status;
 
     @OneToOne(mappedBy = "delivery")
     private Order order;
+
+    @Embedded
+    private Address address;
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 
     public Long getId() {
         return id;
@@ -27,28 +32,9 @@ public class Delivery {
         this.id = id;
     }
 
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public String getZipcode() {
-        return zipcode;
-    }
-
-    public void setZipcode(String zipcode) {
-        this.zipcode = zipcode;
+    public void addOrder(Order order) {
+        this.order = order;
+        order.setDelivery(this);
     }
 
     public DelivertStatus getStatus() {
