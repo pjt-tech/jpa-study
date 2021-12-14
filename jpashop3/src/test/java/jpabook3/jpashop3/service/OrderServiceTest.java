@@ -7,7 +7,6 @@ import jpabook3.jpashop3.domain.OrderStatus;
 import jpabook3.jpashop3.domain.item.Book;
 import jpabook3.jpashop3.exception.NotEnoughStockException;
 import jpabook3.jpashop3.repository.OrderRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -48,7 +47,7 @@ class OrderServiceTest {
         //then
         Order findOrder = orderRepository.findOne(orderId);
 
-        assertEquals(OrderStatus.ORDER,findOrder.getOrderStatus(),"주문상태는 ORDER가 되어야 한다");
+        assertEquals(OrderStatus.ORDER,findOrder.getStatus(),"주문상태는 ORDER가 되어야 한다");
         assertEquals(findOrder.getTotalPrice(),10000*orderCount,"주문금액은 가격 * 수량이다.");
         assertEquals(book.getStockQuantity(), 5 ,"책의 수량이 줄어야 한다.");
         assertEquals(findOrder.getOrderItems().size(),1,"주문한 상품 종류 수가 같아야한다.");
@@ -75,7 +74,7 @@ class OrderServiceTest {
         orderService.orderCancel(orderId);
         //then
         Order findOrder = orderRepository.findOne(orderId);
-        assertThat(OrderStatus.CANCEL).isEqualTo(findOrder.getOrderStatus());
+        assertThat(OrderStatus.CANCEL).isEqualTo(findOrder.getStatus());
         assertThat(10).isEqualTo(book.getStockQuantity());
 
     }

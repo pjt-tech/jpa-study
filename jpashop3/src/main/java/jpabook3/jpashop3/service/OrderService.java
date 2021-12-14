@@ -33,7 +33,7 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
-    private List<Order> findOrderList(OrderSearch orderSearch) {
+    public List<Order> findOrderList(OrderSearch orderSearch) {
         return orderRepository.findAll(orderSearch);
     }
 
