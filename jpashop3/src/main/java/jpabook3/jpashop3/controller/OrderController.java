@@ -1,4 +1,4 @@
-package jpabook3.jpashop3.web;
+package jpabook3.jpashop3.controller;
 
 import jpabook3.jpashop3.service.ItemService;
 import jpabook3.jpashop3.service.MemberService;

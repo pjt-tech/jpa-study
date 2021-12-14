@@ -3,7 +3,7 @@ package jpabook3.jpashop3.service;
 import jpabook3.jpashop3.domain.item.Book;
 import jpabook3.jpashop3.domain.item.Item;
 import jpabook3.jpashop3.repository.ItemRepository;
-import jpabook3.jpashop3.web.BookForm;
+import jpabook3.jpashop3.controller.BookForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
