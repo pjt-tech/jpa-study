@@ -1,13 +1,17 @@
 package jpabook3.jpashop3.repository;
 
+import jpabook3.jpashop3.domain.Address;
 import jpabook3.jpashop3.domain.Order;
+import jpabook3.jpashop3.domain.OrderStatus;
 import jpabook3.jpashop3.service.OrderSearch;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -58,5 +62,20 @@ public class OrderRepository {
             query = query.setParameter("name", orderSearch.getMemberName());
         }
         return query.getResultList();
+    }
+
+    public List<Order> findAllWithMemberDelivery() {
+        return em.createQuery(
+                "select o from Order o" +
+                        " join fetch o.member m" +
+                        " join fetch o.delivery d", Order.class).getResultList();
+
+    }
+
+    public List<SimpleOrderQueryDto> findOrderDtos() {
+        return em.createQuery("select new jpabook3.jpashop3.repository.SimpleOrderQueryDto(o.id, m.name, o.orderDate, o.status, d.address) from Order o " +
+                " join o.member m" +
+                " join o.delivery d", SimpleOrderQueryDto.class)
+                .getResultList();
     }
 }
