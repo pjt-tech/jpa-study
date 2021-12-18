@@ -43,7 +43,6 @@ public class InitDb {
             Delivery delivery = createDelivery(member);
             Order order = Order.createOrder(member, delivery, orderItem1, orderItem2);
             em.persist(order);
-
         }
 
         private Book createBook(String name, int price, int stockQuantity) {
@@ -77,7 +76,6 @@ public class InitDb {
             Delivery delivery = createDelivery(member);
             Order order = Order.createOrder(member, delivery, orderItem1, orderItem2);
             em.persist(order);
-
         }
 
         private Delivery createDelivery(Member member) {

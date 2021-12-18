@@ -70,5 +70,4 @@ public class OrderSimpleApiController {
             address = order.getDelivery().getAddress();
         }
     }
-
 }
