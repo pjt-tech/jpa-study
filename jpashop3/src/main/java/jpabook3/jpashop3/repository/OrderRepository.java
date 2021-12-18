@@ -78,6 +78,7 @@ public class OrderRepository {
                 .getResultList();
     }
 
+    //distinct를 해도 db에서는 값이 완전 같아야 중복으로 되기때문에 JPA에서 따로 중복제거를 해주는것일뿐..
     public List<Order> findAllWithItem() {
         return em.createQuery("select distinct o from Order o" +
                 " join fetch o.member m" +

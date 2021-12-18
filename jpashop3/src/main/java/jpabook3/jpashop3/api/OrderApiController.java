@@ -45,7 +45,7 @@ public class OrderApiController {
     public Result ordersV2() {
         List<Order> orders = orderRepository.findAll(new OrderSearch());
         List<OrderDto> collect = orders.stream()
-                .map(o -> new OrderDto(o))
+                .map(OrderDto::new)
                 .collect(Collectors.toList());
         return new Result(collect);
     }
