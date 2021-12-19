@@ -1,6 +1,7 @@
 package jpabook3.jpashop3.domain;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
 
