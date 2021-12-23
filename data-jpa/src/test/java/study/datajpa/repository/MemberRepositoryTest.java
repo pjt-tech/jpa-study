@@ -3,12 +3,19 @@ package study.datajpa.repository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
+import study.datajpa.dto.MemberDto;
 import study.datajpa.entity.Member;
 import study.datajpa.entity.Team;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -95,5 +102,117 @@ class MemberRepositoryTest {
         assertThat(result.get(0).getUsername()).isEqualTo("AAA");
         assertThat(result.get(0).getAge()).isEqualTo(20);
         assertThat(result.size()).isEqualTo(1);
+    }
+
+    @Test
+    public void testQuery() throws Exception {
+        //given
+        Member m1 = new Member("AAA", 15);
+        Member m2 = new Member("AAA", 20);
+        memberRepository.save(m1);
+        memberRepository.save(m2);
+        //when
+        List<Member> result = memberRepository.findUser("AAA", 15);
+
+        //then
+        assertThat(result.get(0)).isEqualTo(m1);
+    }
+
+    @Test
+    public void findUsernameList() throws Exception {
+        //given
+        Member m1 = new Member("AAA", 15);
+        Member m2 = new Member("BBB", 20);
+        memberRepository.save(m1);
+        memberRepository.save(m2);
+        //when
+        List<String> result = memberRepository.findUsernameList();
+
+        for (String s : result) {
+            System.out.println("s = " + s);
+        }
+    }
+
+    @Test
+    public void findMemberDto() throws Exception {
+        //given
+        Team team = new Team("teamA");
+        teamRepository.save(team);
+
+        Member m1 = new Member("AAA", 15);
+        m1.setTeam(team);
+        memberRepository.save(m1);
+
+        //when
+        List<MemberDto> result = memberRepository.findMemberDto();
+
+        for (MemberDto memberDto : result) {
+            System.out.println("memberDto = " + memberDto);
+        }
+    }
+
+    @Test
+    public void findByNames() throws Exception {
+        //given
+        Team team = new Team("teamA");
+        teamRepository.save(team);
+
+        Member m1 = new Member("AAA", 15);
+        m1.setTeam(team);
+        memberRepository.save(m1);
+
+        //when
+        List<Member> result = memberRepository.findByNames(Arrays.asList("AAA","BBB"));
+
+        for (Member member : result) {
+            System.out.println("member = " + member);
+        }
+    }
+
+    @Test
+    public void returnType() throws Exception {
+        //given
+        Member m1 = new Member("AAA", 15);
+        Member m2 = new Member("BBB", 20);
+        memberRepository.save(m1);
+        memberRepository.save(m2);
+
+        //List의 경우 없으면 List 객체를 반환하지만 결과가 단건의 경우 null을 반환..
+        List<Member> aaa = memberRepository.findListByUsername("AAA");
+        Member member = memberRepository.findMemberByUsername("AAA");
+        //단건의 경우 optional 을 사용권장
+        Optional<Member> opMember = memberRepository.findOptionByUsername("AAA");
+
+        System.out.println("opMember = " + opMember);
+        System.out.println("member = " + member);
+        System.out.println("aaa = " + aaa);
+    }
+
+    @Test
+    public void paging() throws Exception {
+        //given
+        memberRepository.save(new Member("member1",10));
+        memberRepository.save(new Member("member2",10));
+        memberRepository.save(new Member("member3",10));
+        memberRepository.save(new Member("member4",10));
+        memberRepository.save(new Member("member5",10));
+
+        int age = 10;
+        PageRequest pageRequest = PageRequest.of(0, 3, Sort.Direction.DESC, "username");
+        //when
+        Page<Member> page = memberRepository.findByAge(age, pageRequest);
+
+        Page<MemberDto> map = page.map(m -> new MemberDto(m.getId(), m.getUsername(), m.getTeam().getName()));
+
+        //then
+        List<Member> content = page.getContent();
+        long totalElements = page.getTotalElements();
+
+        assertThat(content.size()).isEqualTo(3);
+        assertThat(page.getTotalElements()).isEqualTo(5);
+        assertThat(page.getNumber()).isEqualTo(0);
+        assertThat(page.getTotalPages()).isEqualTo(2);
+        assertThat(page.isFirst()).isTrue();
+        assertThat(page.hasNext()).isTrue();
     }
 }
