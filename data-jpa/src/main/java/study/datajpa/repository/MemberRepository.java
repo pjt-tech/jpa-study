@@ -11,7 +11,7 @@ import javax.persistence.QueryHint;
 import java.util.List;
 import java.util.Optional;
 
-public interface MemberRepository extends JpaRepository<Member, Long> {
+public interface MemberRepository extends JpaRepository<Member, Long>, MemberRepositoryCustom {
 
     //메서드 이름으로 쿼리를 생성
     List<Member> findByUsernameAndAgeGreaterThan(String username, int age);
